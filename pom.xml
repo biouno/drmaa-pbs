@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.biouno</groupId>
+	<artifactId>drmaa-pbs</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<name>DRMAA PBS</name>
+	<description>PBS implementation for DRMAA applications</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>us.levk</groupId>
+			<artifactId>drmaa-common</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-exec</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xebialabs.overthere</groupId>
+			<artifactId>overthere</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+	</dependencies>
+
+</project>
