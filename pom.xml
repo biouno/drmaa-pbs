@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.biouno</groupId>
 	<artifactId>drmaa-pbs</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>DRMAA PBS</name>
 	<description>PBS implementation for DRMAA applications</description>
 
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>com.xebialabs.overthere</groupId>
 			<artifactId>overthere</artifactId>
-			<version>2.4.3</version>
+			<version>4.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -34,5 +34,19 @@
 			<version>2.4</version>
 		</dependency>
 	</dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!--<version>1.7</version>-->
+                <configuration>
+                    <!-- or whatever version you use -->
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

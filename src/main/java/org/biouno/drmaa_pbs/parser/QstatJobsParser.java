@@ -202,6 +202,8 @@ public class QstatJobsParser implements Parser<String, List<Job>> {
                                 LOGGER.log(Level.WARNING, "Failed parsing job walltime remaining: " + nfe.getMessage(), nfe);
                                 job.setWalltimeRemaining(-1L);
                             }
+                        } else if ("Exit_status".equalsIgnoreCase(key)) {
+                            job.setExitStatus(Integer.parseInt(value));
                         }
                     }
                 }
