@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) <2012> <Bruno P. Kinoshita>
+ * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
  * @since 0.1
  */
-public class Node
-    implements Serializable {
+public class Node implements Serializable {
 
     private static final long serialVersionUID = 2980172720826485748L;
 
@@ -123,13 +122,15 @@ public class Node
     public List<Job> getJobs() {
         return jobs;
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
-    
+
 }

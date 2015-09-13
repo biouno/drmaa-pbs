@@ -1,0 +1,4 @@
+The following list contains contributors of the project.
+
+- Bruno P. Kinoshita (@kinow)
+- Kevin Ying (@kevyin)

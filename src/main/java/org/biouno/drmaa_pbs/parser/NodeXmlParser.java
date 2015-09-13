@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) <2012> <Bruno P. Kinoshita>
+ * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,15 +35,17 @@ import org.apache.commons.io.input.CharSequenceInputStream;
 import org.biouno.drmaa_pbs.model.Node;
 import org.xml.sax.SAXException;
 
-
 /**
  * XML SAX parser for nodes.
+ * 
  * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
  * @since 0.1
  */
 public class NodeXmlParser implements Parser<String, List<Node>> {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.tupilabs.pbs.parser.Parser#parse(java.lang.Object)
      */
     public List<Node> parse(String xml) throws ParseException {
@@ -51,9 +53,9 @@ public class NodeXmlParser implements Parser<String, List<Node>> {
             final SAXParserFactory factory = SAXParserFactory.newInstance();
             final SAXParser saxParser = factory.newSAXParser();
             final NodeXmlHandler handler = new NodeXmlHandler();
-            
+
             saxParser.parse(new CharSequenceInputStream(xml, Charset.defaultCharset()), handler);
-            
+
             return handler.getNodes();
         } catch (IOException ioe) {
             throw new ParseException(ioe);
@@ -63,5 +65,5 @@ public class NodeXmlParser implements Parser<String, List<Node>> {
             throw new ParseException(e);
         }
     }
-    
+
 }

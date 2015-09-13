@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) <2012> <Bruno P. Kinoshita>
+ * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,11 +36,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Nodes (from qnodes) SAX XML handler.
+ * 
  * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
  * @since 0.1
  */
-public class NodeXmlHandler
-    extends DefaultHandler {
+public class NodeXmlHandler extends DefaultHandler {
 
     /**
      * List of nodes.
@@ -79,23 +79,22 @@ public class NodeXmlHandler
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.xml.sax.helpers.DefaultHandler#startDocument()
      */
     @Override
-    public void startDocument()
-        throws SAXException {
+    public void startDocument() throws SAXException {
         nodes = new LinkedList<Node>();
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
      * java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String uri, String localName, String qName,
-                             Attributes attributes)
-        throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if ("name".equals(qName)) {
             isName = true;
         } else if ("state".equals(qName)) {
@@ -115,11 +114,11 @@ public class NodeXmlHandler
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */
     @Override
-    public void characters(char[] ch, int start, int length)
-        throws SAXException {
+    public void characters(char[] ch, int start, int length) throws SAXException {
         String text = new String(ch, start, length);
         if (this.isName) {
             this.name = text;
@@ -147,15 +146,14 @@ public class NodeXmlHandler
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
      * java.lang.String, java.lang.String)
      */
     @Override
-    public void endElement(String uri, String localName, String qName)
-        throws SAXException {
+    public void endElement(String uri, String localName, String qName) throws SAXException {
         if ("Node".equals(qName)) {
-            node = new Node(this.name, this.np, this.ntype,
-                            QueueState.fromString(this.state));
+            node = new Node(this.name, this.np, this.ntype, QueueState.fromString(this.state));
             if (StringUtils.isNotBlank(properties)) {
                 final String[] props = properties.split(",");
                 for (final String prop : props) {
@@ -172,12 +170,12 @@ public class NodeXmlHandler
                     }
                 }
             }
-            if(StringUtils.isNotBlank(jobs)) {
+            if (StringUtils.isNotBlank(jobs)) {
                 final String[] jobses = jobs.split(",");
-                for(String jobss : jobses) {
-                    if(jobss.indexOf('/') > 0) {
+                for (String jobss : jobses) {
+                    if (jobss.indexOf('/') > 0) {
                         String[] temp = jobss.split("/");
-                        if(temp.length == 2) {
+                        if (temp.length == 2) {
                             int index = Integer.parseInt(temp[0].trim());
                             String name = temp[1];
                             Job job = new Job();

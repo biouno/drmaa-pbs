@@ -1,7 +1,8 @@
 /*
+ /*
  * The MIT License
  *
- * Copyright (c) <2012> <Bruno P. Kinoshita>
+ * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +39,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
  * @since 0.1
  */
-public class Job
-    implements Serializable {
+public class Job implements Serializable {
 
     private static final long serialVersionUID = 3688638797366941406L;
 
@@ -101,7 +101,7 @@ public class Job
     private String keepFiles;
 
     private String mailPoints;
-    
+
     private String mailUsers;
 
     private String mtime;
@@ -171,7 +171,7 @@ public class Job
     private String startTime;
 
     private int startCount;
-    
+
     private int jobArrayId;
 
     /**
@@ -192,7 +192,7 @@ public class Job
      * Host that submitted the job.
      */
     private String submitHost;
-    
+
     private long walltimeRemaining;
 
     /**
@@ -443,14 +443,14 @@ public class Job
     public void setMailPoints(String mailPoints) {
         this.mailPoints = mailPoints;
     }
-    
+
     /**
      * @return the mailUsers
      */
     public String getMailUsers() {
         return mailUsers;
     }
-    
+
     /**
      * @param mailUsers the mailUsers to set
      */
@@ -807,22 +807,24 @@ public class Job
     public void setSubmitHost(String submitHost) {
         this.submitHost = submitHost;
     }
-    
+
     /**
      * @return the walltimeRemaining
      */
     public long getWalltimeRemaining() {
         return this.walltimeRemaining;
     }
-    
+
     /**
      * @param walltimeRemaining the walltimeRemaining
      */
     public void setWalltimeRemaining(long walltimeRemaining) {
         this.walltimeRemaining = walltimeRemaining;
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -830,14 +832,12 @@ public class Job
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-	public int getJobArrayId()
-	{
-		return jobArrayId;
-	}
+    public int getJobArrayId() {
+        return jobArrayId;
+    }
 
-	public void setJobArrayId(int jobArrayId)
-	{
-		this.jobArrayId = jobArrayId;
-	}
+    public void setJobArrayId(int jobArrayId) {
+        this.jobArrayId = jobArrayId;
+    }
 
 }
