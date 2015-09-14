@@ -264,7 +264,7 @@ public class SessionImpl implements Session {
     }
 
     private JobInfo jobToJobInfo(Job job) {
-        return new JobInfoImpl(job.getId(), job.getResourcesUsed(), job.getState() == "F" || job.getState() == "X",
+        return new JobInfoImpl(job.getId(), job.getResourcesUsed(), job.getState().equals("F") || job.getState().equals("X"),
                 job.getExitStatus(), "", // TODO
                 false, // TODO
                 false, // TODO
