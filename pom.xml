@@ -57,6 +57,19 @@
 		</developer>
 	</developers>
 
+	<contributors>
+		<contributor>
+			<email>ying.kev@gmail.com</email>
+			<name>Kevin Ying</name>
+			<organization>Kinghorn Centre for Clinical Genomics</organization>
+			<organizationUrl>http://garvan.org.au/kccg</organizationUrl>
+			<roles>
+				<role>contributor</role>
+			</roles>
+			<timezone>+10</timezone>
+		</contributor>
+	</contributors>
+
 	<dependencies>
 		<dependency>
 			<groupId>us.levk</groupId>
