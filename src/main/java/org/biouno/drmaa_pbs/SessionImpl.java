@@ -2,17 +2,17 @@
  * The MIT License
  *
  * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -52,7 +52,7 @@ import com.xebialabs.overthere.OverthereProcess;
 
 /**
  * PBS DRMAA Session implementation.
- * 
+ *
  * @author Bruno P. Kinoshita
  * @author Kevin Ying
  * @since 0.1
@@ -69,7 +69,7 @@ public class SessionImpl implements Session {
 
     /**
      * Utility enum with the connection types
-     * 
+     *
      * @author kinow
      *
      */
@@ -103,9 +103,10 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#init(java.lang.String)
      */
+    @Override
     public void init(String contact) throws DrmaaException {
         LOGGER.log(Level.FINEST, "Session init()");
         this.contact = StringUtils.defaultIfBlank(contact, ConnectionType.LOCAL.getType());
@@ -135,9 +136,10 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#exit()
      */
+    @Override
     public void exit() throws DrmaaException {
         LOGGER.log(Level.FINEST, "Session exit()");
         // Not implemented
@@ -145,9 +147,10 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#createJobTemplate()
      */
+    @Override
     public JobTemplate createJobTemplate() throws DrmaaException {
         LOGGER.log(Level.FINEST, "Creating new job template");
         return new JobTemplateImpl();
@@ -155,9 +158,10 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#deleteJobTemplate(org.ggf.drmaa.JobTemplate)
      */
+    @Override
     public void deleteJobTemplate(JobTemplate jt) throws DrmaaException {
         LOGGER.log(Level.FINEST, "Delete job template");
         // Not implemented
@@ -165,18 +169,23 @@ public class SessionImpl implements Session {
 
     private void addIf(CmdLine cmd, Boolean test, List<String> args) {
         if (test) {
-            for (String arg : args) {
-                cmd.addArgument(arg);
-            }
+            add(cmd, args);
+        }
+    }
+
+    private void add(CmdLine cmd, List<String> args) {
+        for (String arg : args) {
+            cmd.addArgument(arg);
         }
     }
 
     /**
      * Runs a job, by calling qsub using the job template settings, and
      * connection info provided when the session was created.
-     * 
+     *
      * @param jt job template
      */
+    @Override
     public String runJob(JobTemplate jt) throws DrmaaException {
         CmdLine cmd = CmdLine.build(COMMAND_QSUB);
         addIf(cmd, StringUtils.isNotBlank(jt.getJobName()), Arrays.asList("-N", jt.getJobName()));
@@ -188,8 +197,9 @@ public class SessionImpl implements Session {
         addIf(cmd, jt.getHardWallclockTimeLimit() != 0,
                 Arrays.asList("-l", "walltime=" + jt.getHardWallclockTimeLimit()));
         LOGGER.finest("native spec " + jt.getNativeSpecification());
-        addIf(cmd, StringUtils.isNotBlank(jt.getNativeSpecification()),
-                Arrays.asList(jt.getNativeSpecification().split(" ")));
+        if (StringUtils.isNotBlank(jt.getNativeSpecification())) {
+            add(cmd, Arrays.asList(jt.getNativeSpecification().split(" ")));
+        }
 
         addIf(cmd, true, Arrays.asList(jt.getRemoteCommand()));
 
@@ -217,7 +227,7 @@ public class SessionImpl implements Session {
 
     /**
      * Stops a job, by calling qdel
-     * 
+     *
      * @param jobId job Id
      */
     public void stopJob(String jobId) throws DrmaaException {
@@ -231,16 +241,18 @@ public class SessionImpl implements Session {
             throw new InvalidJobException(e.getMessage());
         }
 
-        String out = handleCommandOutput(commandOutput);
+        /*String out = */handleCommandOutput(commandOutput);
         LOGGER.finest("qdel exit value: " + commandOutput.getExitValue());
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public List runBulkJobs(JobTemplate jt, int start, int end, int incr) throws DrmaaException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public void control(String jobId, int action) throws DrmaaException {
         LOGGER.log(Level.FINEST, "Control");
         // TODO implement other actions
@@ -257,6 +269,7 @@ public class SessionImpl implements Session {
         }
     }
 
+    @Override
     public void synchronize(@SuppressWarnings("rawtypes") List jobIds, long timeout, boolean dispose)
             throws DrmaaException {
         LOGGER.log(Level.FINEST, "Synchronize");
@@ -269,9 +282,10 @@ public class SessionImpl implements Session {
                 false, // TODO
                 false, // TODO
                 false // TODO
-        );
+                );
     }
 
+    @Override
     public JobInfo wait(String jobId, long timeout) throws DrmaaException {
         LOGGER.log(Level.FINEST, "wait");
         JobInfo jobInfo = jobToJobInfo(parseJobs(jobId).get(0));
@@ -321,39 +335,40 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#getJobProgramStatus(java.lang.String)
      */
+    @Override
     public int getJobProgramStatus(String jobId) throws DrmaaException {
         Job job = parseJobs(jobId).get(0);
 
         /**
          * PBS Professional S The job's state:
-         * 
+         *
          * B Array job has at least one subjob running.
-         * 
+         *
          * E Job is exiting after having run.
-         * 
+         *
          * F Job is finished.
-         * 
+         *
          * H Job is held.
-         * 
+         *
          * M Job was moved to another server.
-         * 
+         *
          * Q Job is queued.
-         * 
+         *
          * R Job is running.
-         * 
+         *
          * S Job is suspended.
-         * 
+         *
          * T Job is being moved to new location.
-         * 
+         *
          * U Cycle-harvesting job is suspended due to keyboard activity.
-         * 
+         *
          * W Job is waiting for its submitter-assigned start time to be reached.
-         * 
+         *
          * X Subjob has completed execution or has been deleted.
-         * 
+         *
          */
         String state = job.getState();
         LOGGER.finest("state : " + state);
@@ -388,36 +403,40 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#getContact()
      */
+    @Override
     public String getContact() {
         return contact;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#getVersion()
      */
+    @Override
     public Version getVersion() {
         return new Version(0, 1);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#getDrmSystem()
      */
+    @Override
     public String getDrmSystem() {
         return "PBS/Torque";
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ggf.drmaa.Session#getDrmaaImplementation()
      */
+    @Override
     public String getDrmaaImplementation() {
         return getDrmSystem();
     }
