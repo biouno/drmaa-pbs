@@ -1,19 +1,19 @@
-/*
+/*esour
  /*
  * The MIT License
  *
  * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,20 +25,30 @@
 package org.biouno.drmaa_pbs.model;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
 /**
- * A PBS job. This job can be submitted to the PBS cluster, but its state is
- * always detached. The information in a Job object is updated as you call
- * service methods.
- * 
+ * A PBS job. This job can be submitted to the PBS cluster, but its state is always detached. The information in a Job
+ * object is updated as you call service methods.
+ *
  * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
  * @since 0.1
  */
+@XStreamAlias("Job")
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 3688638797366941406L;
@@ -49,102 +59,133 @@ public class Job implements Serializable {
     private int queueIndex;
 
     /**
-     * Job ID. Usually a sequential identification number followed by a . (dot)
-     * and the computer name (eg: 23434.thunder.mackenzie.br).
+     * Job ID. Usually a sequential identification number followed by a . (dot) and the computer name (eg:
+     * 23434.thunder.mackenzie.br).
      */
+    @XStreamAlias("Job_Id")
     private String id;
 
     /**
      * Job name. Assigned by the user.
      */
+    @XStreamAlias("Job_Name")
     private String name;
 
     /**
      * Job owner.
      */
+    @XStreamAlias("Job_Owner")
     private String owner;
 
     /**
      * Resources used by the job.
      */
+    @XStreamAlias("resources_used")
     private Map<String, String> resourcesUsed;
 
     /**
      * State of the job.
      */
+    @XStreamAlias("job_state")
     private String state;
 
     /**
      * Job queue name.
      */
+    @XStreamAlias("queue")
     private String queue;
 
     /**
      * PBS server name.
      */
+    @XStreamAlias("server")
     private String server;
 
+    @XStreamAlias("Checkpoint")
     private String checkpoint;
 
+    @XStreamAlias("ctime")
     private String ctime;
 
+    @XStreamAlias("Error_Path")
     private String errorPath;
 
+    @XStreamAlias("exec_host")
     private String execHost;
 
+    @XStreamAlias("exec_port")
     private int execPort;
 
+    @XStreamAlias("Hold_Types")
     private String holdTypes;
 
+    @XStreamAlias("Join_Path")
     private String joinPath;
 
+    @XStreamAlias("Keep_Files")
     private String keepFiles;
 
+    @XStreamAlias("Mail_Points")
     private String mailPoints;
 
+    @XStreamAlias("Mail_Users")
     private String mailUsers;
 
+    @XStreamAlias("mtime")
     private String mtime;
 
     /**
      * Job output path.
      */
+    @XStreamAlias("Output_Path")
     private String outputPath;
 
     /**
      * Job priority.
      */
+    @XStreamAlias("Priority")
     private int priority;
 
+    @XStreamAlias("qtime")
     private String qtime;
 
     /**
      * Whether a job can be rescheduled.
      */
+    @XStreamAlias("Rerunable")
     private boolean rerunable;
 
     /**
      * List of resources used by the job.
      */
+    @XStreamAlias("Resource_List")
     private Map<String, String> resourceList;
 
+    @XStreamAlias("session_id")
     private int sessionId;
 
+    @XStreamAlias("substate")
     private int substate;
 
-    private Map<String, String> variableList;
+    @XStreamAlias("Variable_List")
+    private String variableList;
 
+    @XStreamAlias("euser")
     private String euser;
 
+    @XStreamAlias("egroup")
     private String egroup;
 
+    @XStreamAlias("hashname")
     private String hashName;
 
+    @XStreamAlias("queue_rank")
     private int queueRank;
 
     /**
      * Job queue type.
      */
+    @XStreamAlias("queue_type")
     private String queueType;
 
     /**
@@ -157,19 +198,22 @@ public class Job implements Serializable {
     /**
      * Job exit status.
      */
+    @XStreamAlias("exit_status")
     private int exitStatus;
 
     /**
-     * Submit args. Usually a shell script, but can include too other command
-     * line parameters.
+     * Submit args. Usually a shell script, but can include too other command line parameters.
      */
+    @XStreamAlias("submit_args")
     private String submitArgs;
 
     /**
      * Start time.
      */
+    @XStreamAlias("start_time")
     private String startTime;
 
+    @XStreamAlias("start_count")
     private int startCount;
 
     private int jobArrayId;
@@ -177,23 +221,29 @@ public class Job implements Serializable {
     /**
      * Whether the job is fault-tolerant or not.
      */
+    @XStreamAlias("fault_tolerant")
     private boolean faultTolerant;
 
+    @XStreamAlias("comp_time")
     private String compTime;
 
+    @XStreamAlias("job_radix")
     private int radix;
 
     /**
      * Job total runtime.
      */
+    @XStreamAlias("total_runtime")
     private double totalRuntime;
 
     /**
      * Host that submitted the job.
      */
+    @XStreamAlias("submit_host")
     private String submitHost;
 
-    private long walltimeRemaining;
+    @XStreamAlias("Walltime")
+    private Map<String, String> walltime;
 
     /**
      * Default constructor.
@@ -203,7 +253,7 @@ public class Job implements Serializable {
 
         this.resourceList = new HashMap<String, String>();
         this.resourcesUsed = new HashMap<String, String>();
-        this.variableList = new HashMap<String, String>();
+        this.walltime = new HashMap<String, String>();
     }
 
     /**
@@ -274,6 +324,20 @@ public class Job implements Serializable {
      */
     public void setResourcesUsed(Map<String, String> resourcesUsed) {
         this.resourcesUsed = resourcesUsed;
+    }
+
+    /**
+     * @return the walltime
+     */
+    public Map<String, String> getWalltime() {
+        return walltime;
+    }
+
+    /**
+     * @param walltime the walltime to set
+     */
+    public void setWalltime(Map<String, String> walltime) {
+        this.walltime = walltime;
     }
 
     /**
@@ -573,14 +637,14 @@ public class Job implements Serializable {
     /**
      * @return the variableList
      */
-    public Map<String, String> getVariableList() {
+    public String getVariableList() {
         return variableList;
     }
 
     /**
      * @param variableList the variableList to set
      */
-    public void setVariableList(Map<String, String> variableList) {
+    public void setVariableList(String variableList) {
         this.variableList = variableList;
     }
 
@@ -809,22 +873,21 @@ public class Job implements Serializable {
     }
 
     /**
-     * @return the walltimeRemaining
+     * @return the jobArrayId
      */
-    public long getWalltimeRemaining() {
-        return this.walltimeRemaining;
+    public int getJobArrayId() {
+        return jobArrayId;
     }
 
     /**
-     * @param walltimeRemaining the walltimeRemaining
+     * @param jobArrayId the jobArrayId to set
      */
-    public void setWalltimeRemaining(long walltimeRemaining) {
-        this.walltimeRemaining = walltimeRemaining;
+    public void setJobArrayId(int jobArrayId) {
+        this.jobArrayId = jobArrayId;
     }
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -832,12 +895,91 @@ public class Job implements Serializable {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    public int getJobArrayId() {
-        return jobArrayId;
+    public static XmlFile getXmlFile() {
+        return new XmlFile(XSTREAM);
     }
 
-    public void setJobArrayId(int jobArrayId) {
-        this.jobArrayId = jobArrayId;
+    /**
+     * Instance of XStream used to read/write a Job.
+     */
+    private static final XStream XSTREAM = new XStream();
+
+    /**
+     * Prepares the XStream to understand how to read/write a Job.
+     */
+    static {
+        XSTREAM.alias("Data", List.class);
+        XSTREAM.alias("Job", Job.class);
+        XSTREAM.registerConverter(new MapEntryConverter());
+        XSTREAM.processAnnotations(Job.class);
+    }
+
+    /**
+     * Converter for entries in the PBS output that contain many children, and can be treated as a map. For example, the
+     * list of resources utilised by the job.
+     *
+     * @author Bruno P. Kinoshita
+     * @since 0.3
+     */
+    static class MapEntryConverter implements Converter {
+
+        /*
+         * (non-Javadoc)
+         * @see com.thoughtworks.xstream.converters.ConverterMatcher#canConvert(java.lang.Class)
+         */
+        @Override
+        public boolean canConvert(@SuppressWarnings("rawtypes") Class clazz) {
+            return HashMap.class.isAssignableFrom(clazz);
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see com.thoughtworks.xstream.converters.Converter#marshal(java.lang.Object,
+         * com.thoughtworks.xstream.io.HierarchicalStreamWriter, com.thoughtworks.xstream.converters.MarshallingContext)
+         */
+        @Override
+        public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
+
+            AbstractMap<?, ?> map = (AbstractMap<?, ?>) value;
+            for (Object obj : map.entrySet()) {
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) obj;
+                writer.startNode(entry.getKey().toString());
+                Object val = entry.getValue();
+                if (null != val) {
+                    writer.setValue(val.toString());
+                }
+                writer.endNode();
+            }
+
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see
+         * com.thoughtworks.xstream.converters.Converter#unmarshal(com.thoughtworks.xstream.io.HierarchicalStreamReader,
+         * com.thoughtworks.xstream.converters.UnmarshallingContext)
+         */
+        @Override
+        public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+
+            Map<String, String> map = new HashMap<String, String>();
+
+            if (reader.getNodeName().equals("Resource_List") || reader.getNodeName().equals("Walltime")
+                    || reader.getNodeName().equals("resources_used")) {
+                while (reader.hasMoreChildren()) {
+                    reader.moveDown();
+
+                    String key = reader.getNodeName(); // nodeName aka element's name
+                    String value = reader.getValue();
+                    map.put(key, value);
+
+                    reader.moveUp();
+                }
+            }
+
+            return map;
+        }
+
     }
 
 }

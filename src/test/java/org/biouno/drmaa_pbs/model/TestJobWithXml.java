@@ -21,44 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.biouno.drmaa_pbs.parser;
+package org.biouno.drmaa_pbs.model;
 
-import java.io.IOException;
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.biouno.drmaa_pbs.model.Job;
-import org.biouno.drmaa_pbs.model.XmlFile;
+import org.apache.commons.io.FileUtils;
+import org.biouno.drmaa_pbs.parser.QstatJobsParser;
+import org.junit.Test;
 
 /**
- * Parser for qstat -f [job_id] command.
- *
- * @author Bruno P. Kinoshita - http://www.kinoshita.eti.br
- * @since 0.1
+ * Tests for save and read jobs with XML.
  */
-public class QstatJobsParser implements Parser<String, List<Job>> {
+public class TestJobWithXml {
 
-    private final static Logger LOGGER = Logger.getLogger(QstatJobsParser.class.getName());
+    private static final QstatJobsParser QSTAT_PARSER = new QstatJobsParser();
 
-    /*
-     * (non-Javadoc)
-     * @see com.tupilabs.pbs.parser.Parser#parse(java.lang.Object)
-     */
-    @SuppressWarnings("unchecked")  // XStream reading objects
-    @Override
-    public List<Job> parse(String text) throws ParseException {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, String.format("Parsing text [%s]", text));
-        }
-        final List<Job> jobs;
-        XmlFile xmlFile = Job.getXmlFile();
-        try {
-            jobs = (List<Job>) xmlFile.read(text);
-        } catch (IOException e) {
-            throw new ParseException("Failed parsing text: " + e.getMessage(), e);
-        }
-        return jobs;
+    @Test
+    public void testReadJob() throws Exception {
+        String fileLocation = TestJobWithXml.class.getResource("multiple_jobs.xml").getFile();
+        File file = new File(fileLocation);
+        List<Job> jobs = QSTAT_PARSER.parse(FileUtils.readFileToString(file));
+        assertEquals("Wrong size of jobs", 5, jobs.size());
     }
 
 }
