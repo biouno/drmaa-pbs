@@ -1,5 +1,4 @@
-/*esour
- /*
+/*
  * The MIT License
  *
  * Copyright (c) 2012-2015 Bruno P. Kinoshita, BioUno
@@ -191,8 +190,10 @@ public class Job implements Serializable {
     /**
      * Job comment.
      */
+    @XStreamAlias("comment")
     private String comment;
 
+    @XStreamAlias("etime")
     private String etime;
 
     /**
