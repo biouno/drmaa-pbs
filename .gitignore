@@ -6,3 +6,4 @@ bin
 .project
 .classpath
 .buildpath
+src/main/java/org/biouno/drmaa_pbs/Test.java
